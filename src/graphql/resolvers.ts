@@ -48,4 +48,31 @@ export const resolvers = {
       });
     },
   },
+  Post: {
+    user: async (
+      parent: any,
+      args: any,
+      { prisma }: { prisma: PrismaClient }
+    ) => {
+      // Assuming that the Post model has a userId field
+      const user = await prisma.user.findUnique({
+        where: { id: parent.userId },
+      });
+      return user;
+    },
+  },
+  User: {
+    posts: async (
+      parent: any,
+      args: any,
+      { prisma }: { prisma: PrismaClient }
+    ) => {
+      const post = await prisma.post.findMany({
+        where: {
+          userId: parent.id,
+        },
+      });
+      return post;
+    },
+  },
 };
